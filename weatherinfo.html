@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Weather Info</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <style>
+    body {
+      background: url('https://muralsyourway.vtexassets.com/arquivos/ids/236286/Tropical-Beach-At-Sunset-Mural-Wallpaper.jpg?v=638164405127130000') center center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 20px;
+      justify-items: center;
+      align-items: center;
+      text-align: center;
+      color: #fff;
+      padding: 40px;
+    }
+
+    h1 {
+      font-size: 60px;
+      margin: 0;
+      padding-bottom: 100px;
+    }
+
+    .location-bar {
+      margin-top: 20px;
+    }
+
+    .location-bar form {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .location-bar input[type="text"],
+    .location-bar input[type="submit"] {
+      margin: 10px;
+    }
+
+    .weather-grid {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 20px;
+    }
+
+    .weather-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: rgba(107, 107, 107, 0.5);
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    .weather-item h2 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+
+    .weather-item p {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .weather-item img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+  </style>
+  <script src="weatherinfo.js"></script>
+</head>
+<body onload="displaySavedLocation()">
+  <header>
+    <nav>
+      <img class="logo" src="travelx.png" alt="Logo">
+      <ul>
+        <li><a href="mainpage.html">Main Page</a></li>
+        <li><a href="weatherinfo.html">Weather Info</a></li>
+        <li><a href="imagesofloc.html">Images of Location</a></li>
+        <li><a href="thingstodo.html">Things to Do</a></li> 
+        <li><a href="questions.html">Questions</a></li> 
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <h1>Weather Of <span id="location"></span></h1>
+    <div class="location-bar">
+      <form onsubmit="updateLocation(); return false;">
+        <input type="text" id="locationInput" placeholder="Enter a location">
+        <input type="submit" value="Change">
+      </form>
+    </div>
+
+    <div class="weather-grid">
+      <div class="weather-item">
+        <img src="https://cdn-icons-png.flaticon.com/512/4158/4158502.png" alt="Temperature">
+        <h2>Temperature</h2>
+        <p id="temperature"></p>
+      </div>
+      <div class="weather-item">
+        <img src="https://usefulicons.com/uploads/icons/201905/447/13743037bf35.png" alt="High Temperature">
+        <h2>High Temperature</h2>
+        <p id="highTemperature"></p>
+      </div>
+      <div class="weather-item">
+        <img src="https://icon-library.com/images/temp-icon/temp-icon-23.jpg" alt="Low Temperature">
+        <h2>Low Temperature</h2>
+        <p id="lowTemperature"></p>
+      </div>
+      <div class="weather-item">
+        <img src="https://static-00.iconduck.com/assets.00/temperature-feels-like-icon-495x512-ylzv705f.png" alt="Feels Like">
+        <h2>Feels Like</h2>
+        <p id="feelsLike"></p>
+      </div>
+      <div class="weather-item">
+        <img src="https://cdn-icons-png.flaticon.com/512/172/172922.png" alt="Wind Speed">
+        <h2>Wind Speed</h2>
+        <p id="windSpeed"></p>
+      </div>
+      <div class="weather-item">
+        <img src="https://cdn-icons-png.flaticon.com/512/219/219816.png" alt="Humidity">
+        <h2>Humidity</h2>
+        <p id="humidity"></p>
+      </div>
+      <div class="weather-item">
+        <img src="https://cdn-icons-png.flaticon.com/512/169/169947.png" alt="Sunrise">
+        <h2>Sunrise</h2>
+        <p id="sunriseTime"></p>
+      </div>
+      <div class="weather-item">
+        <img src="https://cdn-icons-png.flaticon.com/512/171/171145.png" alt="Sunset">
+        <h2>Sunset</h2>
+        <p id="sunsetTime"></p>
+      </div>
+      <div class="weather-item">
+        <img src="https://cdn-icons-png.flaticon.com/512/3222/3222791.png" alt="Description Icon">
+        <h2>Weather Description</h2>
+        <p id="weatherDescription"></p>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

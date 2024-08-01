@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Images of Location</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <style>
+    body {
+      background: url('https://wallpaperaccess.com/full/2565736.jpg') center center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+
+    main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      color: #fff;
+    }
+
+    h1 {
+      font-size: 60px;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 20px;
+      margin-top: 20px;
+      padding: 20px;
+    }
+
+    .photo {
+      width: 100%;
+      height: 200px;
+      overflow: hidden;
+      border-radius: 5px;
+    }
+
+    .photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      cursor: pointer;
+    }
+  </style>
+  <script>
+    function displayPhotos(photos) {
+      const galleryContainer = document.getElementById("galleryContainer");
+      galleryContainer.innerHTML = ""; // Clear the gallery container
+
+      photos.forEach(photoUrl => {
+        const photoElement = document.createElement("div");
+        photoElement.classList.add("photo");
+
+        const imgElement = document.createElement("img");
+        imgElement.src = photoUrl;
+        imgElement.alt = "Location Photo";
+
+        photoElement.appendChild(imgElement);
+        galleryContainer.appendChild(photoElement);
+      });
+    }
+
+    function updateLocation() {
+      const locationInput = document.getElementById("locationInput");
+      const location = locationInput.value;
+      document.getElementById("location").textContent = location;
+
+      // Example image URLs for Frisco, TX
+      const photos = [
+        "https://upload.wikimedia.org/wikipedia/commons/6/6d/Frisco_Texas_city_hall.jpg",
+        "https://upload.wikimedia.org/wikipedia/commons/3/33/Dr_Pepper_Ballpark.jpg",
+        "https://upload.wikimedia.org/wikipedia/commons/1/1c/National_Videogame_Museum.jpg",
+        "https://upload.wikimedia.org/wikipedia/commons/9/99/Toyota_Stadium_in_Frisco.jpg",
+        "https://upload.wikimedia.org/wikipedia/commons/e/ed/Frisco_Central_Park.jpg",
+        "https://upload.wikimedia.org/wikipedia/commons/3/35/Frisco_water_tower.jpg",
+        "https://upload.wikimedia.org/wikipedia/commons/f/f1/Frisco_Texas_Railroad.jpg",
+        "https://upload.wikimedia.org/wikipedia/commons/5/54/Frisco_Discovery_Center.jpg",
+        "https://upload.wikimedia.org/wikipedia/commons/4/4c/Stonebriar_Centre_mall.jpg"
+      ];
+
+      displayPhotos(photos);
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <nav>
+      <img class="logo" src="travelx.png" alt="Logo">
+      <ul>
+        <li><a href="mainpage.html">Main Page</a></li>
+        <li><a href="weatherinfo.html">Weather Info</a></li>
+        <li><a href="imagesofloc.html">Images of Location</a></li>
+        <li><a href="thingstodo.html">Things to Do</a></li>
+        <li><a href="questions.html">Questions</a></li>  
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <h1>Images of <span id="location">Frisco, TX</span></h1>
+    <div class="location-bar">
+      <form onsubmit="updateLocation(); return false;">
+        <input type="text" id="locationInput" placeholder="Enter a location">
+        <input type="submit" value="Change">
+      </form>
+    </div>
+    <div class="gallery" id="galleryContainer">
+      <!-- Placeholder images for initial display -->
+      <div class="photo"><img src="images/1.jpg" alt="Image 1"></div>
+      <div class="photo"><img src="images/2.jpg" alt="Image 1"></div>
+      <div class="photo"><img src="images/3.jpg" alt="Image 1"></div>
+      <div class="photo"><img src="images/4.jpg" alt="Image 1"></div>
+      <div class="photo"><img src="images/5.jpg" alt="Image 1"></div>
+      <div class="photo"><img src="images/6.jpeg" alt="Image 1"></div>
+      <div class="photo"><img src="images/7.jpg" alt="Image 1"></div>
+      <div class="photo"><img src="images/8.jpg" alt="Image 1"></div>
+      <div class="photo"><img src="images/9.jpg" alt="Image 1"></div>
+    </div>
+  </main>
+</body>
+</html>

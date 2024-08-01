@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Questions Page</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-image: url(https://images.pexels.com/photos/1054218/pexels-photo-1054218.jpeg?cs=srgb&dl=pexels-stephan-seeber-1054218.jpg&fm=jpg);
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+    }
+
+    h1 {
+      color: #000000;
+      font-size: 35px;
+      margin-bottom: 20px;
+      margin-top: 50px;
+    }
+
+    button {
+      padding: 10px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      text-align: center;
+      margin-right: 7px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #chat-container {
+      margin-top: 50px;
+      padding: 20px;
+      border: 4px solid #ccc;
+      text-align: left;
+      max-width: 875px;
+      margin-left: auto;
+      margin-right: auto;
+      background-color: rgba(200, 200, 200, 0.5);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .columns-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      width: 100%;
+    }
+
+    .chat-column {
+      width: 50%;
+    }
+
+    .google-column {
+      width: 50%;
+    }
+
+    .search-result {
+      background-color: rgba(255, 255, 255, 0.775);
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      margin-left: 10px;
+    }
+
+    .search-image {
+      max-width: 150px;
+      max-height: 100px;
+      float: inline-block;
+      cursor: pointer;
+    }
+
+    #user-input {
+      width: 100%;
+      padding: 5px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      resize: none;
+      height: 60px;
+    }
+
+    #waiting-symbol {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .loader {
+      border: 8px solid #f3f3f3;
+      border-top: 8px solid #3498db;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1.5s linear infinite;
+      margin-top: 20px;
+      align-items: center;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    #scrollToTopBtn {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #555;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: 20px;
+      text-align: center;
+      transition: opacity 0.3s;
+    }
+
+    #scrollToTopBtn:hover {
+      opacity: 0.7;
+    }
+
+    .assistant-message {
+      border: 2px solid #4CAF50;
+      border-radius: 5px;
+      padding: 10px;
+      color: #fff;
+      background-color: #4CAF50;
+      margin-bottom: 10px;
+      width: auto;
+      margin-right: 10px;
+      list-style-type: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <img class="logo" src="travelx.png" alt="Logo">
+      <ul>
+        <li><a href="mainpage.html">Main Page</a></li>
+        <li><a id="weatherLink" href="#">Weather Info</a></li>
+        <li><a id="imagesLink" href="#">Images of Location</a></li>
+        <li><a id="thingsLink" href="#">Things to Do</a></li>
+        <li><a id="questionsLink" href="#">Questions</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <h1>Questions</h1>
+
+    <div id="chat-container">
+      <textarea id="user-input" placeholder="Ask a question"></textarea>
+      <div class="columns-container">
+        <div class="chat-column">
+          <button onclick="sendMessage()">Send</button>
+          <button id="regenerate-button" onclick="regenerateResponse()">Regenerate Response</button>
+          <ul id="messages"></ul>
+          <div id="waiting-symbol">
+            <div class="loader" id="loader" style="display:none"></div>
+          </div>
+        </div>
+        <div class="google-column">
+          <div id="content-container"></div>
+        </div>
+        <button onclick="scrollToTop()" id="scrollToTopBtn" title="Scroll to Top">&#8593;</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="questions.js"></script>
+</body>
+</html>

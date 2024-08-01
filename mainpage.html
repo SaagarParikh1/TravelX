@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Main Page</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <style>
+    body {
+      background: url('https://cdn.wallpapersafari.com/20/44/ZQEePO.jpg') center center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+    main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: row-reverse;
+      text-align: right;
+      color: #fff;
+      padding-left: 350px;
+    }
+    h1 {
+      font-size: 50px;
+      margin: 0;
+    }
+    h2 {
+      font-size: 150px;
+      margin: 0;
+    }
+    .location-display {
+      position: absolute;
+      top: 80px;
+      left: 50px;
+      font-size: 60px;
+      text-transform: capitalize;
+      padding: 20px;
+      background-color: rgba(107, 107, 107, 0.5);
+      border-radius: 5px;
+    }
+
+  </style>
+  <script>
+    function saveLocation() {
+      var locationInput = document.getElementById("locationInput");
+      var location = locationInput.value;
+      localStorage.setItem("savedLocation", location);
+      updateLocationDisplay(location);
+      enableLinks();
+    }
+
+    function updateLocationDisplay(location) {
+      var locationDisplay = document.getElementById("locationDisplay");
+      locationDisplay.textContent = location.charAt(0).toUpperCase() + location.slice(1);
+    }
+
+    function enableLinks() {
+      var weatherLink = document.getElementById("weatherLink");
+      var imagesLink = document.getElementById("imagesLink");
+      var thingsLink = document.getElementById("thingsLink");
+      weatherLink.href = "weatherinfo.html";
+      imagesLink.href = "imagesofloc.html";
+      thingsLink.href = "thingstodo.html";
+    }
+    
+  </script>
+</head>
+<body>
+  <header>
+    <nav>
+      <img class="logo" src="travelx.png" alt="Logo">
+      <ul>
+        <li><a href="mainpage.html">Main Page</a></li>
+        <li><a id="weatherLink" href="#">Weather Info</a></li>
+        <li><a id="imagesLink" href="#">Images of Location</a></li>
+        <li><a id="thingsLink" href="#">Things to Do</a></li>
+        <li><a id="questionsLink" href="#">Questions</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <div>
+      <h1>the joy of</h1>
+      <img src="travel.png" width="600px" height="200px">
+      <form class="search-bar" onsubmit="saveLocation(); return false;">
+        <input type="text" id="locationInput" placeholder="Enter a location">
+        <input type="submit" value="Search">
+      </form>
+    </div>
+    <div class="location-display">Location: <span id="locationDisplay"></span></div>
+  </main>
+</body>
+</html>
