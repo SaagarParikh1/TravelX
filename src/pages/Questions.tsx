@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MessageCircle, Send, Loader } from 'lucide-react';
+import { MessageCircle, Send, Loader, AlertCircle } from 'lucide-react';
 import OpenAI from 'openai';
 
 interface Message {
@@ -9,31 +9,26 @@ interface Message {
   timestamp: Date;
 }
 
-const openai = new OpenAI({
-  apiKey: import.meta.env.VITE_OPENAI_API_KEY,
-  dangerouslyAllowBrowser: true
-});
+const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
+const isValidApiKey = apiKey && apiKey !== 'your_openai_api_key';
+
+let openai: OpenAI | null = null;
+if (isValidApiKey) {
+  openai = new OpenAI({
+    apiKey: apiKey,
+    dangerouslyAllowBrowser: true
+  });
+}
 
 const Questions = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const [quotaExceeded, setQuotaExceeded] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newMessage.trim()) return;
-
-    // Check if API key is configured
-    if (!import.meta.env.VITE_OPENAI_API_KEY || import.meta.env.VITE_OPENAI_API_KEY === 'your_openai_api_key') {
-      const errorMessage: Message = {
-        id: Date.now().toString(),
-        text: "Please configure your OpenAI API key in the .env file first.",
-        sender: 'ai',
-        timestamp: new Date()
-      };
-      setMessages(prev => [...prev, errorMessage]);
-      return;
-    }
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -44,9 +39,23 @@ const Questions = () => {
 
     setMessages(prev => [...prev, userMessage]);
     setNewMessage('');
+
+    if (!isValidApiKey) {
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        text: "Please configure your OpenAI API key in the .env file. Set VITE_OPENAI_API_KEY to your actual API key.",
+        sender: 'ai',
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, errorMessage]);
+      return;
+    }
+
     setLoading(true);
 
     try {
+      if (!openai) throw new Error('OpenAI client not initialized');
+
       const response = await openai.chat.completions.create({
         model: "gpt-3.5-turbo",
         messages: [
@@ -71,15 +80,22 @@ const Questions = () => {
       };
       
       setMessages(prev => [...prev, aiMessage]);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error sending message:', error);
-      const errorMessage: Message = {
+      let errorMessage = "An error occurred while processing your request.";
+      
+      if (error.error?.type === 'insufficient_quota') {
+        setQuotaExceeded(true);
+        errorMessage = "The API key has exceeded its quota. Please use a different API key with available credits.";
+      }
+
+      const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: "Please make sure you have configured a valid OpenAI API key in the .env file.",
+        text: errorMessage,
         sender: 'ai',
         timestamp: new Date()
       };
-      setMessages(prev => [...prev, errorMessage]);
+      setMessages(prev => [...prev, aiMessage]);
     } finally {
       setLoading(false);
     }
@@ -92,6 +108,26 @@ const Questions = () => {
           <h1 className="text-5xl font-bold text-gray-800 mb-2">Travel Assistant</h1>
           <p className="text-gray-600">Your personal AI guide for travel planning</p>
         </div>
+        
+        {(!isValidApiKey || quotaExceeded) && (
+          <div className="mb-8 bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg">
+            <div className="flex items-center">
+              <AlertCircle className="h-6 w-6 text-amber-500 mr-3" />
+              <div>
+                <p className="text-amber-700 font-medium">
+                  {quotaExceeded 
+                    ? "API Quota Exceeded" 
+                    : "OpenAI API Key Not Configured"}
+                </p>
+                <p className="text-amber-600 text-sm mt-1">
+                  {quotaExceeded
+                    ? "The current API key has exceeded its usage limit. Please use a different API key with available credits."
+                    : "Please set your OpenAI API key in the .env file to use the AI assistant."}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
         
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl h-[600px] flex flex-col">
           <div className="flex-1 overflow-y-auto p-8 space-y-6">
@@ -141,8 +177,8 @@ const Questions = () => {
               />
               <button
                 type="submit"
-                disabled={loading}
-                className="px-8 py-4 bg-violet-500 text-white rounded-xl hover:bg-violet-600 transform hover:scale-105 transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center min-w-[4rem]"
+                disabled={loading || quotaExceeded || !isValidApiKey}
+                className="px-8 py-4 bg-violet-500 text-white rounded-xl hover:bg-violet-600 transform hover:scale-105 transition-all duration-300 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:scale-100 flex items-center justify-center min-w-[4rem]"
               >
                 {loading ? (
                   <Loader className="h-6 w-6 animate-spin" />
